@@ -771,8 +771,8 @@ const TOPICS=['Mind',...new Set(CARDS.map(c=>c[0]))];
 /* =====================================================================
    NÉZETEK
 ===================================================================== */
-const NAV=[['home','🏠','Kezdőlap'],['learn','📚','Tanulás'],['signs','🪧','Jelek'],['cards','🃏','Kártyák'],['check','✅','Pipálós'],['quiz','📝','Kvíz']];
-$('#tabs').innerHTML=NAV.map(n=>`<a href="#/${n[0]}" data-r="${n[0]}"><span class="ic" aria-hidden="true">${n[1]}</span><span>${n[2]}</span></a>`).join('');
+const NAV=[['home','🏠','Kezdőlap'],['learn','📚','Tanulás'],['signs','🪧','Jelek'],['cards','🃏','Kártyák'],['check','✅','Pipálós'],['quiz','📝','Kvíz'],['vizsga','🎯','Vizsga','vizsga.html']];
+$('#tabs').innerHTML=NAV.map(n=>`<a href="${n[3]||'#/'+n[0]}" data-r="${n[0]}"><span class="ic" aria-hidden="true">${n[1]}</span><span>${n[2]}</span></a>`).join('');
 
 const stats=()=>{
   const ck=Object.keys(state.known).filter(k=>state.known[k]===1).length;
@@ -792,7 +792,7 @@ function viewHome(){
       <span class="badge warn">magyar KRESZ · tanulóhely</span>
       <h1 style="margin-top:12px">Tanuld meg a <em>KRESZ-t</em> könnyedén, képekkel.</h1>
       <p class="lead">Ez az oldal a magyar közlekedési szabályokat (KRESZ) tanítja meg. Itt mindenhez kép tartozik, így hamar látod, miről van szó, és mit kell tenned.</p>
-      <div class="row"><a class="btn pri" href="#/learn">📚 Kezdjük a tanulást</a><a class="btn" href="#/cards">🃏 Kártyák</a><a class="btn" href="#/quiz">📝 Kvíz</a></div>
+      <div class="row"><a class="btn pri" href="#/learn">📚 Kezdjük a tanulást</a><a class="btn" href="#/cards">🃏 Kártyák</a><a class="btn" href="#/quiz">📝 Kvíz</a><a class="btn" href="vizsga.html">🎯 Vizsgaszimulátor</a></div>
     </div>
     <div class="pic" role="img" aria-label="Közlekedési táblák">${IMG.signs()}</div>
   </section>
@@ -955,7 +955,7 @@ function viewQuiz(){
 ===================================================================== */
 function render(){
   const [r,arg]=(location.hash.replace(/^#\//,'')||'home').split('/');
-  const route=NAV.find(n=>n[0]===r)?r:'home';
+  const route=NAV.find(n=>n[0]===r&&!n[3])?r:'home';
   $$('#tabs a').forEach(a=>a.toggleAttribute('aria-current',a.dataset.r===route)||a.removeAttribute('aria-current'));
   $$('#tabs a').forEach(a=>{if(a.dataset.r===route)a.setAttribute('aria-current','page')});
   const app=$('#app');
